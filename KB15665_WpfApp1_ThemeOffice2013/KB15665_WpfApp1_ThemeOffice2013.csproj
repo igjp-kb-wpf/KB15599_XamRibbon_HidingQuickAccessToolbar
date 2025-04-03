@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Infragistics.WPF.Ribbon" Version="24.2.93" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\NIshibashi\Cases\KB\15665\KB15665_WpfApp1_ThemeOffice2013\KB15665_WpfApp1_ThemeOffice2013\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\NIshibashi\Cases\KB\15665\KB15665_WpfApp1_ThemeOffice2013\KB15665_WpfApp1_ThemeOffice2013\.editorconfig" />
+  </ItemGroup>
+
+</Project>

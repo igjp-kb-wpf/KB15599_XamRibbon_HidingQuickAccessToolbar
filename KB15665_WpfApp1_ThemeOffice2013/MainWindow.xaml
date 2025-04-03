@@ -1,0 +1,221 @@
+<Window x:Class="KB15665_WpfApp1_ThemeOffice2013.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:igWindows="http://infragistics.com/Windows"
+        xmlns:igRibbon="http://infragistics.com/Ribbon"
+        xmlns:local="clr-namespace:KB15665_WpfApp1_ThemeOffice2013"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <igRibbon:XamRibbon
+                x:Name="xamRibbon1"
+                Theme="Office2013">
+            <igRibbon:XamRibbon.Resources>
+                <!-- https://github.com/Infragistics/wpf-resources/DefaultStyles/Ribbon/RibbonScenic.xaml からコピー (ここから) -->
+                <!-- =================================================================== -->
+                <!-- XamRibbon Style -->
+                <!-- =================================================================== -->
+                <Style TargetType="{x:Type igRibbon:XamRibbon}" BasedOn="{StaticResource {x:Type igRibbon:XamRibbon}}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igRibbon:XamRibbon}">
+                                <AdornerDecorator>
+                                    <Grid x:Name="rootVisual">
+                                        <Grid.RowDefinitions>
+                                            <!--<RowDefinition Height="Auto" MinHeight="22"/>-->    <!-- もともとのコード -->
+                                            <RowDefinition Height="0"/> <!-- 書き換え後のコード -->
+                                            <RowDefinition Height="Auto" MinHeight="{TemplateBinding TabHeaderActualHeight}" />
+                                            <RowDefinition x:Name="tabContentRow" Height="*"/>
+                                            <RowDefinition x:Name="qatBelowRow" Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <igRibbon:ScenicRibbonCaptionArea
+								x:Name="PART_XamRibbonCaption"
+								Height="Auto"
+								Grid.ColumnSpan="3"
+                                IsWithinRibbonWindow="{TemplateBinding IsWithinRibbonWindow}"/>
+                                        <Control
+								x:Name="captionButtonArea"
+								Grid.Column="2"
+								VerticalAlignment="Top"
+								Focusable="False"
+                                igRibbon:RibbonWindowContentHost.CaptionButtonVersion="{Binding Path=(igRibbon:RibbonWindowContentHost.CaptionButtonVersion), RelativeSource={RelativeSource Self}}"                                
+								Template="{DynamicResource {ComponentResourceKey {x:Type igRibbon:XamRibbon}, CaptionButtonAreaTemplate}}"
+								Visibility="Collapsed"/>
+                                        <igRibbon:RibbonCaptionPanel
+								x:Name="PART_RibbonCaptionPanel"
+                Margin="{TemplateBinding CaptionPanelMargin}"
+								Grid.Column="1"
+								Grid.Row="0"
+								KeyboardNavigation.TabIndex="2"
+								KeyboardNavigation.TabNavigation="Local"/>
+                                        <Rectangle x:Name="minimizedRibbonBorder" Height="1" Margin="{TemplateBinding TabAreaMargin}" VerticalAlignment="Bottom" Visibility="Collapsed" Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerBorderFillKey}}" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+                                        <ContentControl
+								x:Name="PART_RibbonTabControlSite"
+                Margin="{TemplateBinding TabAreaMargin}"
+								Grid.Row="1"
+								Grid.RowSpan="2"
+								Grid.Column="0"
+								Grid.ColumnSpan="3"
+								Focusable="False"
+								HorizontalContentAlignment="Stretch"
+								KeyboardNavigation.TabIndex="0"
+								KeyboardNavigation.TabNavigation="Local"
+								VerticalContentAlignment="Stretch"/>
+                                        <!-- JJD 01/28/14 wrap image in border to expand hit test area  -->
+                                        <Border x:Name="PART_WindowIcon" Background="Transparent" Grid.Column="0" Margin="{TemplateBinding WindowIconMargin}" >
+                                            <Image x:Name="WindowIconIamge" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Center"
+											        Margin="6,0,6,0" Grid.Column="0" />
+                                        </Border>
+                                        <ContentControl
+								x:Name="PART_ApplicationMenuSite"
+								Grid.Row="1"
+								Grid.RowSpan="1"
+								Grid.Column="0"
+								Grid.ColumnSpan="2"
+								HorizontalAlignment="Left"
+								Margin="{TemplateBinding ApplicationMenuMargin}"
+								VerticalAlignment="Stretch"
+								Focusable="False"
+								KeyboardNavigation.TabIndex="1"
+								KeyboardNavigation.TabNavigation="Local"/>
+                                        <ContentControl
+								x:Name="PART_QuickAccessToolbarBottomSite"
+                Margin="{TemplateBinding QuickAccessToolbarMargin}"
+                Grid.Column="0"
+								Grid.ColumnSpan="3"
+								Grid.Row="3"
+								Focusable="False"
+								KeyboardNavigation.TabIndex="3"
+								KeyboardNavigation.TabNavigation="Local"
+								Visibility="Collapsed"/>
+                                    </Grid>
+                                </AdornerDecorator>
+                                <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+                                        <Setter TargetName="WindowIconIamge" Property="Source" Value="{Binding Path=IconResolved, RelativeSource={RelativeSource AncestorType={x:Type igRibbon:RibbonWindowContentHost}}}" />
+                                    </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                                            <Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                                            <!-- JJD 01/09/14 - NA 2014 vol 1 - Added 2013 Backstage feature -->
+                                            <Condition Binding="{Binding Path=IsOffice2013Theme, RelativeSource={x:Static RelativeSource.Self}}" Value="False" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="PART_XamRibbonCaption" Property="Background" Value="Transparent"/>
+                                        <Setter TargetName="captionButtonArea" Property="Visibility" Value="Hidden"/>
+                                        <!--<Setter TargetName="PART_ApplicationMenuSite" Property="Margin" Value="-2,-5,0,0"/>-->
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                                            <Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="False"/>
+                                            <Condition Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="PART_XamRibbonCaption" Property="Background" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionAreaInactiveFillKey}}"/>
+                                    </MultiDataTrigger>
+                                    <Trigger Property="QuickAccessToolbarLocation" Value="BelowRibbon">
+                                        <Setter TargetName="PART_QuickAccessToolbarBottomSite" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                                            <Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="captionButtonArea" Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                    <!-- JJD 01/09/14 - NA 2014 vol 1 - Added 2013 Backstage feature -->
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True" />
+                                            <Condition Binding="{Binding Path=IsOffice2013Theme, RelativeSource={x:Static RelativeSource.Self}}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="captionButtonArea" Property="Visibility" Value="Visible" />
+                                    </MultiDataTrigger>
+
+                                    <!-- JJD 10/13/10 - TFS42764
+                 If we aren't within a ribbon window then use the CaptionPanelFillKey brush for the caption area background -->
+                                    <Trigger Property="IsWithinRibbonWindow" Value="False">
+                                        <Setter TargetName="PART_XamRibbonCaption" Property="Background" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.CaptionPanelFillKey}}"/>
+                                    </Trigger>
+
+                                    <!-- JJD 05/27/10 - NA 2010 volume 2 - Scenic Ribbon supportt 
+                        added margin properties for this area so we don't need to use triggers -->
+                                    <!--<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True" />
+								<Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="False" />
+								<Condition Binding="{Binding Path=WindowState, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="Normal" />
+							</MultiDataTrigger.Conditions>
+							<Setter Property="Margin" TargetName="PART_RibbonTabControlSite" Value="3,0,3,0" />
+						</MultiDataTrigger>
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True" />
+								<Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="False" />
+								<Condition Binding="{Binding Path=WindowState, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="Normal" />
+								<Condition Binding="{Binding Path=QuickAccessToolbarLocation, RelativeSource={x:Static RelativeSource.Self}}" Value="BelowRibbon" />
+							</MultiDataTrigger.Conditions>
+							<Setter Property="Margin" TargetName="PART_QuickAccessToolbarBottomSite" Value="3,0,3,0" />
+						</MultiDataTrigger>-->
+                                    <!--<DataTrigger Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+                            <Setter TargetName="minimizedRibbonBorder" Property="Margin" Value="6,0"/>
+                        </DataTrigger>-->
+                                    <Trigger Property="IsMinimized" Value="True">
+                                        <Setter TargetName="tabContentRow" Property="Height" Value="0"/>
+                                        <Setter TargetName="minimizedRibbonBorder" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                    <!--<MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsMinimized, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="minimizedRibbonBorder" Property="Margin" Value="6,0"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsMinimized, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="minimizedRibbonBorder" Property="Margin" Value="2,0"/>
+                        </MultiDataTrigger>-->
+                                    <Trigger Property="AutoHideState" Value="Hidden">
+                                        <Setter TargetName="rootVisual" Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                    <!-- JJD 05/27/10 - NA 2010 volume 2 - Scenic Ribbon supportt 
+                        added margin properties for this area so we don't need to use triggers -->
+                                    <!--<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding Path=IsWithinRibbonWindow, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+								<Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsGlassActive), RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+								<Condition Binding="{Binding Path=WindowState, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="Maximized"/>
+							</MultiDataTrigger.Conditions>
+							<Setter TargetName="PART_RibbonCaptionPanel" Property="Margin" Value="0,4,0,0"/>
+						</MultiDataTrigger>-->
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <!-- https://github.com/Infragistics/wpf-resources/DefaultStyles/Ribbon/RibbonScenic.xaml からコピー (ここまで) -->
+            </igRibbon:XamRibbon.Resources>
+            <igRibbon:XamRibbon.Tabs>
+                <igRibbon:RibbonTabItem Header="TabItem1">
+                    <igRibbon:RibbonGroup Caption="RibbonGroup1" Id="ribbonGroup1" Width="100"/>
+                    <igRibbon:RibbonGroup Caption="RibbonGroup2" Id="ribbonGroup2" Width="100"/>
+                </igRibbon:RibbonTabItem>
+                <igRibbon:RibbonTabItem Header="TabItem2">
+                    <igRibbon:RibbonGroup Caption="RibbonGroupA" Id="ribbonGroupA" Width="150"/>
+                    <igRibbon:RibbonGroup Caption="RibbonGroupB" Id="ribbonGroupB" Width="150"/>
+                </igRibbon:RibbonTabItem>
+            </igRibbon:XamRibbon.Tabs>
+        </igRibbon:XamRibbon>
+
+    </Grid>
+</Window>
